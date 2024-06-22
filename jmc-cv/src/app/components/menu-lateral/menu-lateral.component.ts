@@ -1,5 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { ScrollService } from '../../services/scroll.service';
 
 @Component({
   selector: 'app-menu-lateral',
@@ -11,20 +12,21 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 
 export class MenuLateralComponent {
 
-  scrollUp = false;
-  scrollDown = false;
+  constructor(private scrollService: ScrollService){}
+
   isInAction = false;
+  lastY?: number; // Para almacenar la posición Y del último toque
 
   @HostListener('window:wheel', ['$event'])
   onWheel(event: WheelEvent) {
     if(!this.isInAction){
       if (event.deltaY < 0) {
-        this.scrollUp = true;
-        this.scrollDown = false;
+        this.scrollService.scrollUp = true;
+        this.scrollService.scrollDown = false;
         this.moveUp();
       } else if (event.deltaY > 0) {
-        this.scrollUp = false;
-        this.scrollDown = true;
+        this.scrollService.scrollUp = false;
+        this.scrollService.scrollDown = true;
         this.moveDown();
       }
     }
@@ -38,19 +40,17 @@ export class MenuLateralComponent {
 
     if (this.lastY !== undefined && !this.isInAction) {
       if (currentY < this.lastY) {
-        this.scrollUp = true;
-        this.scrollDown = false;
+        this.scrollService.scrollUp = true;
+        this.scrollService.scrollDown = false;
         this.moveUp();
       } else if (currentY > this.lastY) {
-        this.scrollUp = false;
-        this.scrollDown = true;
+        this.scrollService.scrollUp = false;
+        this.scrollService.scrollDown = true;
         this.moveDown();
       }
       this.lastY = currentY;
     }
   }
-
-  private lastY?: number; // Para almacenar la posición Y del último toque
 
   moveUp(){
     const pageActive = document.querySelector(".point-activated");
@@ -71,5 +71,5 @@ export class MenuLateralComponent {
       setTimeout(() => this.isInAction = false, 150);
     }
   }
-
+  
 }
