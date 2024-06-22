@@ -1,0 +1,25 @@
+.menu-lateral{
+    position: absolute;
+    height: 100vh;
+    z-index: 100;
+}
+
+.point{
+    top: 40%;
+    left: 100%;
+    display: block;
+    position: relative;
+    border-radius: 999px;
+    width: 15px;
+    height: 15px;
+    background-color: white;
+    margin-top: 15px;
+}
+
+.point:hover{
+    cursor: pointer;
+}
+
+.point-activated{
+    background-color: orange;
+}
